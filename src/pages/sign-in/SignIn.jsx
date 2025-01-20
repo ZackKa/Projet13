@@ -197,7 +197,7 @@
 
 
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';  // Assure-toi d'utiliser useDispatch et useSelector
 import { useNavigate } from 'react-router-dom';
 import { setUser, setError, setLoading } from '../../redux/userSlice';  // Import des actions pour gérer l'état utilisateur
@@ -209,13 +209,22 @@ import Footer from '../../components/footer/Footer';
 function SignIn() {
   const [email, setEmail] = useState('');  // Local state pour le champ email
   const [password, setPassword] = useState('');  // Local state pour le champ mot de passe
-  // const [rememberMe, setRememberMe] = useState(false);  // Local state pour "Remember me"
+  const [rememberMe, setRememberMe] = useState(false);  // Local state pour "Remember me"
   const dispatch = useDispatch();  // Initialisation de dispatch pour envoyer des actions à Redux
   const navigate = useNavigate();  // Hook pour rediriger après la connexion
 
   // Accès à l'état d'erreur depuis le store Redux
   const error = useSelector((state) => state.user.error);  // Utilise useSelector pour accéder à l'erreur
   const loading = useSelector((state) => state.user.loading);  // Récupère l'état de chargement
+
+  // Lors du chargement du composant, vérifie si "Remember me" est activé
+  useEffect(() => {
+    const storedEmail = localStorage.getItem('rememberedEmail');  // Récupérer l'email du localStorage
+    if (storedEmail) {
+      setEmail(storedEmail);  // Si trouvé, pré-remplir le champ email
+      setRememberMe(true);  // Marquer la case "Remember me" comme cochée
+    }
+  }, []);
 
   // Fonction de soumission du formulaire
   const handleSubmit = async (e) => {
@@ -234,9 +243,12 @@ function SignIn() {
       // Stocke les informations de l'utilisateur (token et userInfo) dans Redux
       dispatch(setUser({ token, userInfo }));
 
-      // // Si la case "Remember me" est cochée, on stocke aussi le token dans le localStorage
-      // if (rememberMe) {
-      // }
+      // Si la case "Remember me" est cochée, stocke l'email dans le localStorage
+      if (rememberMe) {
+        localStorage.setItem('rememberedEmail', email);  // Stocke l'email
+      } else {
+        localStorage.removeItem('rememberedEmail');  // Supprime l'email si la case est décochée
+      }
 
       // Redirige l'utilisateur vers la page utilisateur
       navigate('/user');
@@ -284,8 +296,8 @@ function SignIn() {
               <input
                 type="checkbox"
                 id="remember-me"
-                // checked={rememberMe}  // Vérifie si la case est cochée ou non
-                // onChange={() => setRememberMe(!rememberMe)}  // Inverse l'état du checkbox "Remember me"
+                checked={rememberMe}  // Vérifie si la case est cochée ou non
+                onChange={() => setRememberMe(!rememberMe)}  // Inverse l'état du checkbox "Remember me"
               />
               <label htmlFor="remember-me">Remember me</label>
             </div>

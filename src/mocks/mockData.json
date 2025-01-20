@@ -1,0 +1,53 @@
+{
+    "677f9a4050c2d14b0cbac568": {
+      "accounts": [
+        {
+          "id": "account-1",
+          "multiplier": "x8349",
+          "title": "Argent Bank Checking",
+          "balance": 2082.79,
+          "description": "Available Balance"
+        },
+        {
+          "id": "account-2",
+          "multiplier": "x6712",
+          "title": "Argent Bank Savings",
+          "balance": 10928.42,
+          "description": "Available Balance"
+        },
+        {
+          "id": "account-3",
+          "multiplier": "x8349",
+          "title": "Argent Bank Credit Card",
+          "balance": 184.3,
+          "description": "Current Balance"
+        }
+      ]
+    },
+    "677f9a4050c2d14b0cbac567": {
+      "accounts": [
+        {
+          "id": "account-1",
+          "multiplier": "x8349",
+          "title": "Argent Bank Checking",
+          "balance": 3082.79,
+          "description": "Available Balance"
+        },
+        {
+          "id": "account-2",
+          "multiplier": "x6712",
+          "title": "Argent Bank Savings",
+          "balance": 20928.42,
+          "description": "Available Balance"
+        },
+        {
+          "id": "account-3",
+          "multiplier": "x8349",
+          "title": "Argent Bank Credit Card",
+          "balance": 284.3,
+          "description": "Current Balance"
+        }
+      ]
+    }
+  }
+  
