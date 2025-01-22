@@ -522,14 +522,14 @@ import { useSelector, useDispatch } from 'react-redux';
 import Header from '../../components/header/Header';
 import Footer from '../../components/footer/Footer';
 import { updateUserProfile } from '../../services/updateProfil/UpdateProfil';  // Service pour mettre à jour le profil
-import { setUser } from '../../redux/userSlice';  // Actions Redux pour l'utilisateur
+import { setUser } from './userSlice';  // Actions Redux pour l'utilisateur
 import mockData from '../../mocks/mockData.json';  // Importer les données mockées au format JSON
 
 function User() {
   const dispatch = useDispatch();
   
   // Récupérer les données utilisateur et le token depuis Redux
-  const { userInfo, token, loading } = useSelector((state) => state.user);  
+  const { userInfo, token, loading } = useSelector((state) => state.user); // useSelector s'abonne automatiquement aux changements du store Redux et met à jour le composant lorsque l'état sélectionné change.
   const [isEditing, setIsEditing] = useState(false);  // Pour gérer le mode édition du profil
   const [firstName, setFirstName] = useState(userInfo?.body?.firstName || '');  // Prénom de l'utilisateur
   const [lastName, setLastName] = useState(userInfo?.body?.lastName || '');      // Nom de l'utilisateur

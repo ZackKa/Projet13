@@ -129,7 +129,7 @@
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';  // Importation de useSelector et useDispatch
 import argentBankLogo from '../../assets/argentBankLogo.png';
-import { clearUser } from '../../redux/userSlice';  // Importation de l'action clearUser
+import { clearUser } from '../../pages/user/userSlice';  // Importation de l'action clearUser
 
 function Header() {
   const navigate = useNavigate();  // Hook pour la navigation
@@ -151,6 +151,7 @@ function Header() {
   // Fonction pour la déconnexion
   const handleLogout = (e) => {
     e.preventDefault();
+    localStorage.removeItem("authToken"); //Retirer le token du storage
     dispatch(clearUser()); // Dispatcher l'action pour effacer l'utilisateur du store Redux
     navigate('/sign-in'); // Redirection vers la page de connexion
   };

@@ -343,3 +343,9 @@ button.main-nav-item {
 .inputName{
   font-size: medium;
 }
+
+.loading-page{
+  margin-top: 300px;
+  font-size: xxx-large;
+  font-weight: 700;
+}

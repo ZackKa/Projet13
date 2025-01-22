@@ -200,7 +200,7 @@
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';  // Assure-toi d'utiliser useDispatch et useSelector
 import { useNavigate } from 'react-router-dom';
-import { setUser, setError, setLoading } from '../../redux/userSlice';  // Import des actions pour gérer l'état utilisateur
+import { setUser, setError, setLoading } from '../user/userSlice';  // Import des actions pour gérer l'état utilisateur
 import { getAuthToken } from '../../services/auth/Auth';  // Fonction pour récupérer le token d'authentification
 import { getUserProfile } from '../../services/userProfil/UserProfil';  // Fonction pour récupérer les informations utilisateur
 import Header from '../../components/header/Header';

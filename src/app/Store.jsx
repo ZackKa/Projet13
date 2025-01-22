@@ -1,5 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit';
-import userReducer from './userSlice'; // Import du reducer qui gère l'état utilisateur
+import userReducer from '../pages/user/userSlice'; // Import du reducer qui gère l'état utilisateur
 
 // Crée le store Redux avec configureStore
 const store = configureStore({
