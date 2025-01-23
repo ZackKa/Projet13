@@ -1,45 +1,22 @@
-// export const getUserProfile = async (token) => {
-//     try {
-//       const response = await fetch('http://localhost:3001/api/v1/user/profile', {
-//         method: 'POST',  // Utilisation de 'POST' si l'API le demande
-//         headers: {
-//           'Content-Type': 'application/json',
-//           'Authorization': `Bearer ${token}`,  // Ajout du token dans l'en-tête Authorization
-//         },
-//         body: JSON.stringify({}), // Corps vide ou adapté selon les besoins de l'API
-//       });
-  
-//       if (response.ok) {
-//         const profileData = await response.json();
-//         return profileData;  // Retourne les informations utilisateur
-//       } else {
-//         throw new Error('Impossible de récupérer les informations utilisateur');
-//       }
-//     } catch (error) {
-//       console.error('Erreur lors de la récupération des données utilisateur:', error);
-//       throw error;
-//     }
-//   };
-  
-
 export const getUserProfile = async (token) => {
     try {
+      // Envoi de la requête POST au backend pour obtenir les informations du profil utilisateur
       const response = await fetch('http://localhost:3001/api/v1/user/profile', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json', // Indique que le corps de la requête est au format JSON
+          'Authorization': `Bearer ${token}`, // Ajoute le token d'authentification dans l'en-tête 'Authorization'
         },
-        body: JSON.stringify({}),
+        body: JSON.stringify({}), // Le corps de la requête est un objet JSON vide, car on n'envoie pas de données supplémentaires
       });
   
+      // Si la réponse du serveur est OK, on récupère les données du profil utilisateur
       if (response.ok) {
-        const profileData = await response.json();
-        // Stocke les informations utilisateur dans localStorage
+        const profileData = await response.json(); // On parse la réponse JSON du serveur contenant les informations utilisateur
         console.log("datauser",profileData)
-        // localStorage.setItem('user', JSON.stringify(profileData));
-        return profileData;
+        return profileData;  // On retourne les données du profil utilisateur pour pouvoir les utiliser ailleurs dans l'application
       } else {
+        // Si la réponse n'est pas OK, on lance une erreur
         throw new Error('Erreur lors de la récupération des informations utilisateur');
       }
     } catch (error) {
@@ -47,4 +24,3 @@ export const getUserProfile = async (token) => {
       throw new Error('Erreur réseau lors de la récupération des informations utilisateur');
     }
   };
-  

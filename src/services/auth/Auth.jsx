@@ -1,33 +1,6 @@
-// export const loginUser = async (email, password) => {
-//     const userData = { email, password };
-  
-//     try {
-//       const response = await fetch('http://localhost:3001/api/v1/user/login', {
-//         method: 'POST',
-//         headers: {
-//           'Content-Type': 'application/json',
-//         },
-//         body: JSON.stringify(userData),
-//       });
-  
-//       if (response.ok) {
-//         const data = await response.json();
-//         const { token } = data.body;
-  
-//         // Sauvegarde le token dans localStorage
-//         localStorage.setItem('authToken', token);
-//         return token; // Retourne le token pour que le composant appelant puisse l'utiliser
-//       } else {
-//         throw new Error('Authentification échouée');
-//       }
-//     } catch (error) {
-//       console.error('Erreur lors de l\'authentification:', error);
-//       throw error;
-//     }
-//   };
-  
+// Fonction asynchrone pour récupérer un token d'authentification en utilisant l'email et le mot de passe de l'utilisateur
 export const getAuthToken = async (email, password) => {
-    const userData = { email, password };
+    const userData = { email, password }; // On crée un objet avec l'email et le mot de passe de l'utilisateur
   
     try {
       // Envoi des données au backend pour l'authentification
@@ -36,21 +9,22 @@ export const getAuthToken = async (email, password) => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(userData),
+        body: JSON.stringify(userData), // On envoie les données d'authentification (email et mot de passe) sous forme de chaîne JSON
       });
   
+      // Si la réponse est OK, on récupère le token d'authentification
       if (response.ok) {
-        const data = await response.json();
+        const data = await response.json(); // On parse la réponse JSON
         const { token } = data.body;
         console.log("token",token)
         localStorage.setItem('authToken', token);  // Sauvegarde du token dans localStorage
-        return token;
+        return token; // On retourne le token pour l'utiliser dans l'application
       } else {
-        throw new Error('Authentification échouée');
+        throw new Error('Authentification échouée');  // Si la réponse du backend n'est pas OK, on lance une erreur
       }
     } catch (error) {
-        console.log("Error auth", error)
+      // Si une erreur survient lors de la requête, on affiche l'erreur
+      console.log("Error auth", error)
       throw new Error('Erreur lors de l\'authentification');
     }
   };
-  
