@@ -80,29 +80,31 @@ function User() {
           {isEditing ? (
             <>
               <h1>Welcome back</h1>
-              <div className="change-name">
-                <input
-                  className="inputName"
-                  type="text"
-                  value={firstName}
-                  onChange={(e) => setFirstName(e.target.value)}
-                />
-                <input
-                  className="inputName"
-                  type="text"
-                  value={lastName}
-                  onChange={(e) => setLastName(e.target.value)}
-                />
-              </div>
-              <div className="change-name change-button">
-                <button
-                  className="save-button"
-                  onClick={handleSave}
-                  disabled={isSaving || loading} // Désactive le bouton "Save" si une sauvegarde est en cours ou si une autre action de chargement (global) est en cours
-                >
-                  {isSaving ? 'Saving...' : 'Save'}
-                </button>
-                <button className="cancel-button" onClick={handleCancel}>Cancel</button>
+              <div className='formulaire'>
+                <div className="change-name">
+                  <input
+                    className="inputName"
+                    type="text"
+                    value={firstName}
+                    onChange={(e) => setFirstName(e.target.value)}
+                  />
+                  <input
+                    className="inputName"
+                    type="text"
+                    value={lastName}
+                    onChange={(e) => setLastName(e.target.value)}
+                  />
+                </div>
+                <div className="change-name change-button" id='button-form'>
+                  <button
+                    className="save-button"
+                    onClick={handleSave}
+                    disabled={isSaving || loading} // Désactive le bouton "Save" si une sauvegarde est en cours ou si une autre action de chargement (global) est en cours
+                  >
+                    {isSaving ? 'Saving...' : 'Save'}
+                  </button>
+                  <button className="cancel-button" onClick={handleCancel}>Cancel</button>
+                </div>
               </div>
             </>
           ) : (
