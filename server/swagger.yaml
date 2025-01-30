@@ -1,0 +1,182 @@
+openapi: 3.0.0  # Version de l'OpenAPI utilisée pour décrire l'API
+info:
+  title: API de Transactions  # Titre de l'API
+  description: API pour gérer les transactions des utilisateurs.  # Description de l'API
+  version: "1.0.0"  # Version de l'API
+  termsOfService: 'http://swagger.io/terms/'  # Lien vers les conditions d'utilisation de l'API
+
+paths:  # Définit les chemins des différentes ressources de l'API
+  /transactions:  # Route pour récupérer les transactions du mois de l'utilisateur
+    get:
+      summary: Récupérer toutes les transactions du mois en cours pour l'utilisateur authentifié  # Résumé de la fonctionnalité
+      description: Permet à l'utilisateur de visualiser toutes ses transactions groupées par compte.  # Description détaillée de ce que fait cette requête
+      security:
+        - bearerAuth: []  # Authentification nécessaire via un token JWT pour accéder à cette ressource
+      parameters:  # Les paramètres sont optionnels, s'ils ne sont pas fournis, on récupère les transactions du mois
+        - name: startDate
+          in: query  # Paramètre passé dans l'URL
+          required: false  # Ce paramètre est optionnel
+          schema:
+            type: string
+            format: date  # Le format attendu est une date
+          description: Date de début de la période (au format YYYY-MM-DD).
+        - name: endDate
+          in: query  # Paramètre passé dans l'URL
+          required: false  # Ce paramètre est optionnel
+          schema:
+            type: string
+            format: date  # Le format attendu est une date
+          description: Date de fin de la période (au format YYYY-MM-DD).
+      responses:
+        200:
+          description: Liste des transactions pour le mois en cours de l'utilisateur  # Réponse si la requête réussit
+          content:  #  précise le type de contenu des requêtes ou réponses.
+            application/json:  # Format de la réponse (ici JSON)
+              schema:  # définit la structure des données.
+                type: array  # La réponse est une liste (tableau)
+                items:  # est utilisé pour décrire les éléments individuels dans un tableau
+                  type: object  # Chaque élément de la liste est un objet
+                  properties:  # décrit les différentes propriétés d'un objet.
+                    transactionId:
+                      type: string  # Identifiant unique de la transaction
+                    accountId:
+                      type: string  # Identifiant du compte de l'utilisateur associé à la transaction
+                    amount:
+                      type: number
+                      format: float  # Montant de la transaction (format numérique avec décimales)
+                    balance:
+                      type: number
+                      format: float  # Le solde après la transaction (format numérique avec décimales)
+                    date:
+                      type: string
+                      format: date  # Date de la transaction (au format date)
+                    description:
+                      type: string  # Description de la transaction
+        401:
+          description: Non autorisé, utilisateur non authentifié  # L'utilisateur n'est pas authentifié
+        403:
+          description: L'utilisateur n'a pas les droits nécessaires pour accéder à ces transactions  # L'utilisateur authentifié n'a pas accès à cette ressource
+        404:
+          description: Aucun utilisateur trouvé ou transactions non disponibles  # Aucun utilisateur ou transactions pour cet utilisateur
+        500:
+          description: Erreur interne du serveur  # Problème interne du serveur
+
+  /transactions/{transactionId}:  # Route pour récupérer, modifier ou supprimer une transaction spécifique par ID
+    get:
+      summary: Récupérer les détails d'une transaction spécifique  # Résumé de la fonctionnalité
+      description: Permet de visualiser les détails d'une transaction en particulier.  # Description détaillée
+      security:
+        - bearerAuth: []  # Authentification nécessaire via un token JWT pour accéder à cette ressource
+      parameters:
+        - name: transactionId
+          in: path  # Le paramètre transactionId est passé dans l'URL
+          required: true  # Ce paramètre est obligatoire
+          schema:
+            type: string  # Le type du paramètre est une chaîne de caractères
+          description: ID de la transaction dont les détails doivent être récupérés.  # Description du paramètre
+      responses:
+        200:
+          description: Détails de la transaction  # Réponse si la requête réussit
+          content:
+            application/json:  # Format de la réponse (ici JSON)
+              schema:
+                type: object  # La réponse est un objet
+                properties:
+                  transactionId:
+                    type: string  # Identifiant de la transaction
+                  accountId:
+                    type: string  # Identifiant du compte de l'utilisateur
+                  amount:
+                    type: number
+                    format: float  # Montant de la transaction
+                  balance:
+                    type: number
+                    format: float  # Le solde après la transaction
+                  date:
+                    type: string
+                    format: date  # Date de la transaction
+                  description:
+                    type: string  # Description de la transaction
+                  category:
+                    type: string  # Catégorie de la transaction (ex: alimentation, logement, etc.)
+                  transactionType:
+                    type: string  # Type de la transaction
+                  note:
+                    type: string  # Note associée à la transaction, si elle existe
+        401:
+          description: Non autorisé, utilisateur non authentifié  # L'utilisateur n'est pas authentifié
+        403:
+          description: L'utilisateur n'a pas les droits nécessaires pour accéder à cette transaction  # L'utilisateur n'a pas les droits nécessaires
+        404:
+          description: Transaction non trouvée  # Aucun résultat trouvé pour l'ID de la transaction
+        500:
+          description: Erreur interne du serveur  # Problème interne du serveur
+    
+    patch:  # utilisation de patch et non put car put modifie tout
+      summary: Modifier partiellement la catégorie et la note d'une transaction existante  # Résumé de la fonctionnalité (modification partielle)
+      description: Permet de modifier partiellement la catégorie et la note d'une transaction existante pour l'utilisateur authentifié.  # Description détaillée
+      security:
+        - bearerAuth: []  # Authentification nécessaire via un token JWT
+      parameters:  # définit les paramètres qui sont envoyés dans une requête (dans l'URL, les en-têtes ou le corps).
+        - name: transactionId
+          in: path  # Paramètre transactionId dans l'URL
+          required: true  # Ce paramètre est obligatoire
+          schema:
+            type: string  # Le type du paramètre est une chaîne de caractères
+          description: ID de la transaction à modifier.  # Description du paramètre
+      requestBody:
+        required: true  # Le corps de la requête est obligatoire
+        description: Update Note and Category
+        content:
+          application/json:  # Format de la requête (ici JSON)
+            schema:
+              type: object  # Le corps de la requête est un objet
+              properties:
+                category:
+                  type: string  # Nouvelle catégorie à attribuer à la transaction
+                note:
+                  type: string  # Nouvelle note à attribuer à la transaction
+      responses:
+        200:
+          description: Transaction modifiée avec succès  # La modification a réussi
+        400:
+          description: Données de la transaction invalides  # Les données envoyées sont invalides (body erroné, dépassement de caractère)
+        401:
+          description: Non autorisé, utilisateur non authentifié  # L'utilisateur n'est pas authentifié
+        403:
+          description: L'utilisateur n'a pas les droits nécessaires pour modifier cette transaction  # L'utilisateur n'a pas les droits nécessaires
+        404:
+          description: Transaction non trouvée  # Transaction introuvable
+        500:
+          description: Erreur interne du serveur  # Problème interne du serveur
+
+    delete:
+      summary: Supprimer une transaction  # Résumé de la fonctionnalité (suppression)
+      description: Permet de supprimer une transaction existante pour l'utilisateur authentifié.  # Description détaillée
+      security:
+        - bearerAuth: []  # Authentification nécessaire via un token JWT
+      parameters:
+        - name: transactionId
+          in: path  # Paramètre transactionId dans l'URL
+          required: true  # Ce paramètre est obligatoire
+          schema:
+            type: string  # Le type du paramètre est une chaîne de caractères
+          description: ID de la transaction à supprimer.  # Description du paramètre
+      responses:
+        204:
+          description: Transaction supprimée avec succès  # Suppression réussie (pas de contenu dans la réponse)
+        401:
+          description: Non autorisé, utilisateur non authentifié  # L'utilisateur n'est pas authentifié
+        403:
+          description: L'utilisateur n'a pas les droits nécessaires pour supprimer cette transaction  # L'utilisateur n'a pas les droits nécessaires
+        404:
+          description: Transaction non trouvée  # Transaction introuvable
+        500:
+          description: Erreur interne du serveur  # Problème interne du serveur
+
+components:  # est une section centrale pour déclarer des éléments réutilisables comme les schémas de sécurité, les modèles de données.
+  securitySchemes:  # Définition des schémas de sécurité que l'API utilise
+    bearerAuth:  # Nom du schéma de sécurité
+      type: http  # Type d'authentification HTTP
+      scheme: bearer  # Schéma "Bearer", utilisé avec les tokens
+      bearerFormat: JWT  # Format du token (ici JSON Web Token - JWT)
