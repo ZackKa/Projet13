@@ -19,7 +19,7 @@ function ProtectedRoute({ children }) {
   if (!token) {
     return <Navigate to="/sign-in" />;
   }
-  return children;  // Si l'utilisateur est connecté, on affiche les enfants (la page protégée)
+  return children;  // Si l'utilisateur est connecté, on affiche les enfants (la page protégée user)
 }
 
 // Validation de la prop 'children' avec PropTypes
@@ -59,12 +59,12 @@ useEffect(() => {
     // Si pas de token trouvé, on considère que le chargement est terminé mais sans utilisateur
     setIsLoaded(true);
   }
-}, [dispatch]);
+}, [dispatch]); // Le dispatch est stable et ne change pas, mais il est ici pour éviter un avertissement
 
 
   // Si les données ne sont pas encore chargées, afficher "Loading..."
   if (!isLoaded || loading) {
-    return <div className='loading-page'>Loading...</div>;  // Message de chargement en attendant la récupération des données
+    return <div className='loading-page'>Loading...</div>;
   }
 
   // Si tout est prêt, on affiche les routes
@@ -74,7 +74,7 @@ useEffect(() => {
         <Route path="/" element={<Home />} />
         <Route path="/sign-in" element={<SignIn />} />
         <Route path="/user" element={<ProtectedRoute><User /></ProtectedRoute>} />  {/* Page protégée */}
-        <Route path="/*" element={<Error />} />  {/* Page d'erreur pour les routes non définies */}
+        <Route path="/*" element={<Error />} />
       </Routes>
     </Router>
   );

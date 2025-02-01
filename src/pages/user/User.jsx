@@ -13,7 +13,7 @@ function User() {
   const { userInfo, token, loading } = useSelector((state) => state.user); // useSelector s'abonne automatiquement aux changements du store Redux et met à jour le composant lorsque l'état sélectionné change.
   const [isEditing, setIsEditing] = useState(false);  // Pour gérer le mode édition du profil
   const [firstName, setFirstName] = useState(userInfo?.body?.firstName || '');  // Prénom de l'utilisateur
-  const [lastName, setLastName] = useState(userInfo?.body?.lastName || '');      // Nom de l'utilisateur
+  const [lastName, setLastName] = useState(userInfo?.body?.lastName || '');  // Nom de l'utilisateur
   const [isSaving, setIsSaving] = useState(false);  // Pour gérer l'état de sauvegarde
 
   // Récupérer les comptes associés à l'utilisateur basé sur l'ID
@@ -68,7 +68,7 @@ function User() {
   // Fonction pour annuler les modifications et revenir aux valeurs originales
   const handleCancel = () => {
     setFirstName(userInfo?.body?.firstName || '');  // Restaurer les valeurs originales
-    setLastName(userInfo?.body?.lastName || '');    // Restaurer les valeurs originales
+    setLastName(userInfo?.body?.lastName || '');  // Restaurer les valeurs originales
     setIsEditing(false);  // Quitter le mode édition
   };
 

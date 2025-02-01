@@ -1,5 +1,5 @@
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';  // Importation de useSelector et useDispatch
+import { useSelector, useDispatch } from 'react-redux';
 import argentBankLogo from '../../assets/argentBankLogo.png';
 import { clearUser } from '../../pages/user/userSlice';  // Importation de l'action clearUser
 
